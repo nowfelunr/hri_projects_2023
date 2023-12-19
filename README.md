@@ -1,118 +1,72 @@
-# hri_projects_2023
-Course content for UNR CS4/691 - Human-Robot Interaction
+# **HRI Course Assignments README**
 
-## set up ROS environment
+This README provides instructions for running various robotics assignments using ROS. Each assignment focuses on different aspects of robotics, such as obstacle avoidance, gesture recognition, and speech generation.
 
-If you have not yet installed ROS, you can do so in just a few lines (and just a few minutes) like so:
+## Assignment 1: Goal Moving/Obstacle Avoidance (Week 2)
 
-```
-sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-sudo apt install curl # if you haven't already installed curl
-curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
-sudo apt update
-sudo apt install ros-noetic-desktop-full
-```
+**Steps to run:**
+1. Launch the simulation environment:
+`roslaunch week2 person_world.launch`
+2. Run RViz for visualization:
+`rosrun rviz rviz -d ~/hri2023/src/hri_projects_2023/week2/person.rviz`
+3. Launch the leg detector:
+`roslaunch week2 leg_detector.launch`
+4. Broadcast the robot's position:
+`rosrun week2 robot_pos_brdcst.py`
+5. Broadcast the positions of people:
+`rosrun week2 people_pos_brdcst.py`
+6. Run the obstacle avoidance script:
+`rosrun week2 obstacle_avoidence.py`
 
-Note: this assumes that you're running 20.04 and installing the noetic distribution
+## Assignment 2: Look at Hand / Look at Where the Hand is Pointing (Week 8)
 
+### Problem 1
+**Steps to run:**
+1. Launch the robot state publisher:
+`roslaunch nao_description robot_state_publisher.launch`
+2. Open RViz and load the robot model:
+`rviz`
+Then open the appropriate RViz file and select RobotModel.
+3. Run the joint state publisher GUI (close after opening):
+`rosrun joint_state_publisher_gui joint_state_publisher_gui`
+4. Execute the script to make the robot look at its hand:
+`rosrun week8 look_at_hand.py`
 
-You should be able to now add ROS to your environment variables like so (note you have to do this once per terminal:
+### Problem 2
+**Steps to run:**
+Follow the same first three steps as in Problem 1, then:
+1. Run the frame broadcaster:
+`rosrun week8 new_frame_broadcaster.py`
+2. Execute the script to make the robot look at the new frame:
+`rosrun week8 look_at_new_frame.py`
 
-```
-source /opt/ros/noetic/setup.bash
-```
+### Problem 3
+**Steps to Run:**
+Follow the same steps as in Problem 1, then:
+1. Run the keyframe publisher:
+`rosrun week7 keyframe_publisher.py`
 
-This will install the packages for a base ROS distribution. Just for funzies, let's take a look at what that setup.bash file did:
+## Assignment 3: Speech Generation (Week A)
 
-```
-export | grep ROS
-```
+### Problem 1
+**Steps to run:**
+1. Launch the speech recognition node:
+`roslaunch ros_vosk ros_vosk.launch`
+2. Run the script to repeat speech:
+`rosrun weekA repeat_speach.py`
 
-Will show us all the environment variables needed for the ROS configure. The most relevant variables will be ROS_DISTRO, ROS_ROOT, ROS_PACKAGE_PATH, and ROS_MASTER_URI. Look up at Dave, now.
+### Problem 2
+**Steps to run:**
+1. Launch the speech recognition node:
+`roslaunch ros_vosk ros_vosk.launch`
+2. Follow the same steps as in Assignment 2, Problem 1.
+3. Execute the script to listen for a command and respond:
+`rosrun weekA listen_command.py`
+4. Then say "move" to initiate the command.
 
-## set up your ROS workspace
-
-We're not done, yet. Now, we need to create a place for the ROS packages that we (and others) write to go. This is called a workspace. This is easy to do and can help you keep track of multple versions of ROS installations or package configurations. 
-
-To start we need to create a directory:
-
-```
-cd ~
-mkdir -p hri2023/src
-cd ~/hri2023/src
-cd ~/hri2023
-catkin_make
-```
-
-You'll see some compile nonsense that hasn't really done anything other than set up the workspace. Let's look at it now.
-
-If you type
-
-```
-ls
-```
-
-You'll see there's now a build and devel directory. Let's concentrate on devel for now. if you look in that directory you'll see a lot of setup files, these help ROS find the developed files in this workspace. Let's use one of them:
-
-```
-source ~/hri2023/devel/setup.bash
-```
-
-This will install the packages for a base ROS distribution. Just for funzies, let's take a look at what that setup.bash file changed:
-
-```
-export | grep ROS
-```
-
-ROS_PACKAGE_PATH= now points to your workspace directory (along with the default ROS package directory). Look up at Dave, now.
-
-
-## fork and clone repository
-
-First, navigate to the hri_projects_2023 page: https://github.com/UNR-RoboticsResearchLab/hri_projects_2023
-
-You should create a version under your github id. Then clone your repository:
-
-```
-cd ~/hri2023/src
-git clone https://github.com/<YOUR GITHUB ID HERE>/hri_projects_2023
-```
-
-this will clone the repo into your ROS package source directory.
-
-Next we want to test the compile of the system:
-
-```
-cd ~/hri2023
-catkin_make
-```
-
-assuming all goes well, then you should be able to get to the week 0 package using the roscd command:
-
-```
-roscd week0
-```
-
-if you've gotten to the directory: ~/hri2023/src/hri_projects_2023/week0
-
-## Navigate to the week 0 project readme
-
-Each project week will have a readme file with instructions for the week, navigate to the week1 directory on github to see the instruction for the week.
-
-If you get lost, the direct link is: https://github.com/UNR-RoboticsResearchLab/hri_projects_2023/tree/main/week0
-
-## committing a change to your repository
-
-when you're done try commiting to the repo:
-
-you want to add any new files with:
-
-```
-git add <filename>
-```
-
-
-```
-git commit -m 'INSERT MEMO HERE'
-git push
-```
+### Problem 3
+**Steps to run:**
+1. Launch the speech recognition node:
+`roslaunch ros_vosk ros_vosk.launch`
+2. Run the script to ask a question:
+`rosrun weekA ask_question.py`
